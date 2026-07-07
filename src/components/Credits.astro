@@ -1,0 +1,96 @@
+---
+// Artist credits with themed links to each artist's Linktree.
+const artists = [
+  {
+    name: 'beside the point',
+    location: 'Poland',
+    url: 'https://linktr.ee/besidethepoint',
+  },
+  {
+    name: 'Bluefi',
+    location: 'Puerto Rico',
+    url: 'https://linktr.ee/bluefimusic',
+  },
+];
+---
+
+<footer class="credits">
+  <span class="credits__label">A LoFi collaboration by</span>
+  <ul class="credits__list">
+    {
+      artists.map((a) => (
+        <li class="credits__item">
+          <a
+            class="credits__link"
+            href={a.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="credits__name">{a.name}</span>
+            <span class="credits__loc">{a.location}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</footer>
+
+<style>
+  .credits {
+    margin-top: clamp(1.6rem, 5vw, 2.4rem);
+    text-align: center;
+  }
+
+  .credits__label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(226, 220, 255, 0.55);
+    margin-bottom: 0.9rem;
+  }
+
+  .credits__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .credits__link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.35s ease,
+      border-color 0.35s ease, background 0.35s ease;
+  }
+  .credits__link:hover,
+  .credits__link:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(199, 169, 240, 0.6);
+    background: rgba(199, 169, 240, 0.12);
+    box-shadow: 0 8px 30px -10px rgba(147, 96, 205, 0.7);
+    outline: none;
+  }
+
+  .credits__name {
+    font-weight: 600;
+    font-size: 0.98rem;
+    color: #f2ecff;
+  }
+
+  .credits__loc {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: rgba(167, 232, 224, 0.85);
+  }
+</style>

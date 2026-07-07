@@ -1,0 +1,69 @@
+---
+// Full-viewport animated celestial background.
+// The <canvas> hosts a WebGL shader (see src/scripts/background.js).
+// A CSS gradient layer sits beneath it as a fallback for no-WebGL clients.
+---
+
+<div class="celestial" aria-hidden="true">
+  <div class="celestial__fallback"></div>
+  <canvas id="celestial-canvas" class="celestial__canvas"></canvas>
+</div>
+
+<script>
+  import { initCelestialBackground } from '../scripts/background.js';
+
+  const canvas = document.getElementById('celestial-canvas');
+  if (canvas instanceof HTMLCanvasElement) {
+    initCelestialBackground(canvas);
+  }
+</script>
+
+<style>
+  .celestial {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: #0b0821; /* matches shader C_DEEP-ish to avoid a flash */
+  }
+
+  .celestial__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Animated CSS fallback: a large, slowly drifting multi-stop gradient.
+     Hidden behind the canvas normally; revealed when the canvas is unavailable. */
+  .celestial__fallback {
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(60% 55% at 25% 30%, rgba(111, 55, 162, 0.55), transparent 60%),
+      radial-gradient(55% 50% at 78% 68%, rgba(39, 128, 139, 0.45), transparent 62%),
+      radial-gradient(50% 45% at 60% 20%, rgba(241, 152, 173, 0.30), transparent 60%),
+      linear-gradient(135deg, #0b0821 0%, #2e1e6a 45%, #1a2a5e 100%);
+    background-size: 200% 200%;
+    filter: blur(20px) saturate(1.05);
+    animation: celestial-drift 40s ease-in-out infinite alternate;
+  }
+
+  @keyframes celestial-drift {
+    0%   { background-position: 0% 0%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 20% 100%; }
+  }
+
+  /* When WebGL fails, background.js adds these classes. */
+  .celestial__canvas.is-unavailable {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .celestial__fallback {
+      animation: none;
+    }
+  }
+</style>

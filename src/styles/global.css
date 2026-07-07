@@ -1,0 +1,53 @@
+/* ---- Reset ------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- Theme tokens ------------------------------------------------------- */
+:root {
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  /* Display: prefer an expressive rounded/geometric system face; falls back
+     cleanly. No CDN dependency so it works offline / when ported to Astro. */
+  --font-display: 'Avenir Next', 'Futura', 'Segoe UI', system-ui, sans-serif;
+
+  --ink: #ece7ff;
+  --bg-deep: #0b0821;
+
+  color-scheme: dark;
+}
+
+/* ---- Base --------------------------------------------------------------- */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  min-height: 100svh;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg-deep);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+}
