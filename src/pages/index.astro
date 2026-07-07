@@ -3,10 +3,16 @@ import '../styles/global.css';
 import CelestialBackground from '../components/CelestialBackground.astro';
 import Player from '../components/Player.astro';
 import Credits from '../components/Credits.astro';
+import Story from '../components/Story.astro';
 
 const title = 'Ola Celeste — beside the point × Bluefi';
 const description =
-  'Ola Celeste — a LoFi collaboration by beside the point (Poland) and BlueFI (Puerto Rico). Press play and drift.';
+  'Ola Celeste — a LoFi collaboration by beside the point (Poland) and Bluefi (Puerto Rico). Press play and drift.';
+
+// Social share image. Resolves to an absolute URL when `site` is set in
+// astro.config.mjs (required by most crawlers); otherwise falls back to the
+// site-root-relative path.
+const ogImage = new URL('/og-image.png', Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>
@@ -23,6 +29,17 @@ const description =
     <meta property="og:type" content="music.song" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta property="og:image:alt" content="Ola Celeste — a celestial LoFi collaboration by beside the point and Bluefi" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <meta name="theme-color" content="#0b0821" />
 
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%232e1e6a'/%3E%3Ccircle cx='38' cy='40' r='4' fill='%23a7e8e0'/%3E%3Ccircle cx='64' cy='58' r='3' fill='%23f198ad'/%3E%3Ccircle cx='56' cy='30' r='2.5' fill='%23fff'/%3E%3C/svg%3E" />
@@ -31,19 +48,68 @@ const description =
   <body>
     <CelestialBackground />
 
-    <main class="stage">
-      <Player />
-      <Credits />
+    <main>
+      <section class="stage">
+        <Player />
+        <Credits />
+        <a class="scroll-cue" href="#story" aria-label="Read the story">
+          <span>The story</span>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </section>
+
+      <Story />
     </main>
 
     <style>
       .stage {
+        position: relative;
         min-height: 100svh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         padding: clamp(1.5rem, 5vw, 3rem);
+      }
+
+      /* Scroll cue nudging the visitor toward the backstory. */
+      .scroll-cue {
+        position: absolute;
+        bottom: clamp(1rem, 3vh, 2rem);
+        left: 50%;
+        transform: translateX(-50%);
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        text-decoration: none;
+        color: rgba(226, 220, 255, 0.75);
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+        animation: cue-bob 2.4s ease-in-out infinite;
+      }
+      .scroll-cue:hover,
+      .scroll-cue:focus-visible {
+        color: #fff;
+        outline: none;
+      }
+
+      @keyframes cue-bob {
+        0%, 100% { transform: translate(-50%, 0); }
+        50% { transform: translate(-50%, 6px); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .scroll-cue { animation: none; }
+      }
+
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
       }
     </style>
   </body>

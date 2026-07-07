@@ -1,0 +1,146 @@
+---
+// Backstory section — appears as you scroll below the player hero.
+// Two artists, two continents, one track made over Discord; and an open call
+// to labels. Reveals on scroll (IntersectionObserver), respects reduced motion.
+---
+
+<section class="story" id="story" aria-label="The story behind Ola Celeste">
+  <div class="story__panel" data-reveal>
+    <span class="story__eyebrow">The Story</span>
+
+    <p class="story__lead">
+      <strong>Liam</strong> (Bluefi) and <strong>Nick</strong> (beside the point)
+      have never met. They live on different continents.
+    </p>
+
+    <p>
+      But they made this track together — remotely, talking on
+      <span class="story__hl">Discord</span>. For the sake of the art.
+    </p>
+
+    <p class="story__call">
+      Now they're looking for a <strong>label</strong> to help distribute
+      their music.
+    </p>
+
+    <p class="story__tag">Connect, create, and make friends. Live.</p>
+  </div>
+</section>
+
+<script>
+  // Fade + rise reveal when the panel scrolls into view.
+  const targets = document.querySelectorAll('[data-reveal]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    targets.forEach((t) => t.classList.add('is-visible'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    targets.forEach((t) => io.observe(t));
+  }
+</script>
+
+<style>
+  .story {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(3rem, 10vh, 7rem) clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .story__panel {
+    width: min(620px, 92vw);
+    padding: clamp(2rem, 6vw, 3.4rem);
+    border-radius: 26px;
+    text-align: center;
+    background: rgba(20, 16, 46, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 24px 70px -20px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(22px) saturate(1.2);
+    -webkit-backdrop-filter: blur(22px) saturate(1.2);
+
+    /* reveal-on-scroll initial state */
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .story__panel.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .story__eyebrow {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(226, 220, 255, 0.6);
+    margin-bottom: 1.6rem;
+  }
+
+  .story p {
+    color: rgba(236, 231, 255, 0.9);
+    font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+    line-height: 1.65;
+    margin: 0 auto 1.15rem;
+    max-width: 44ch;
+  }
+  .story p:last-child {
+    margin-bottom: 0;
+  }
+
+  .story__lead {
+    font-size: clamp(1.2rem, 3vw, 1.6rem) !important;
+    color: #f4f0ff !important;
+    line-height: 1.5 !important;
+  }
+  .story strong {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .story__hl {
+    color: #a7e8e0;
+    font-weight: 600;
+  }
+
+  .story__call {
+    margin-top: 1.8rem !important;
+    padding-top: 1.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .story__call strong {
+    background: linear-gradient(120deg, #fff 0%, #dcd0ff 45%, #a7e8e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .story__tag {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 3vw, 1.5rem) !important;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: #fff !important;
+    margin-top: 0.4rem !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .story__panel {
+      transition: none;
+    }
+  }
+</style>
