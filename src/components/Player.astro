@@ -3,10 +3,21 @@
 // The native <audio> element is the engine; all visible controls are custom.
 const trackSrc = '/audio/Ola%20Celeste.mp3';
 const trackTitle = 'Ola Celeste';
+const coverSrc = '/art/ola-celeste-cover.webp';
 ---
 
 <section class="player" data-player aria-label="Audio player">
   <audio data-audio src={trackSrc} preload="metadata" loop></audio>
+
+  <div class="player__art">
+    <img
+      src={coverSrc}
+      width="1254"
+      height="1254"
+      alt="Ola Celeste album art"
+      decoding="async"
+    />
+  </div>
 
   <div class="player__meta">
     <span class="player__eyebrow">Now playing</span>
@@ -96,6 +107,34 @@ const trackTitle = 'Ola Celeste';
       0 28px 90px -18px rgba(0, 0, 0, 0.65),
       0 0 60px -12px rgba(147, 96, 205, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+
+  /* Album art */
+  .player__art {
+    width: clamp(260px, 82%, 440px);
+    aspect-ratio: 1 / 1;
+    margin: 0 auto clamp(1.3rem, 4vw, 1.8rem);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 20px 50px -16px rgba(0, 0, 0, 0.65),
+      0 0 40px -14px rgba(147, 96, 205, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+  .player__art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Gentle lift + stronger glow while the track plays. */
+  .player.is-playing .player__art {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+      0 26px 60px -14px rgba(0, 0, 0, 0.7),
+      0 0 60px -10px rgba(199, 169, 240, 0.7),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
 
   .player__meta {
